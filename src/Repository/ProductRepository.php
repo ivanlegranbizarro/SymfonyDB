@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Tag;
 use App\Entity\Product;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Product>
@@ -45,14 +46,30 @@ class ProductRepository extends ServiceEntityRepository
   //            ->getOneOrNullResult()
   //        ;
   //    }
-  public function findALlProductsWithCommentsAndTags(): array
+  public function findALlProductsWithCommentsAndTags(Tag $tag = null): array
   {
-    return $this->createQueryBuilder('p')
+    $qb = $this->createQueryBuilder('p')
       ->addSelect('c', 't')
       ->leftJoin('p.comments', 'c')
       ->leftJoin('p.tags', 't')
-      ->orderBy('p.id', 'DESC')
-      ->getQuery()
-      ->getResult();
+      ->orderBy('p.id', 'DESC');
+    if ($tag) {
+      $qb->andWhere('t = :tag')
+        ->setParameter('tag', $tag);
+    }
+    return $qb->getQuery()->getResult();
   }
+
+  // public function findProductByTag(Tag $tag): array
+  // {
+  //   return $this->createQueryBuilder('p')
+  //     ->addSelect('t', 'c')
+  //     ->leftJoin('p.tags', 't')
+  //     ->leftJoin('p.comments', 'c')
+  //     ->where('t = :tag')
+  //     ->setParameter('tag', $tag)
+  //     ->orderBy('p.id', 'DESC')
+  //     ->getQuery()
+  //     ->getResult();
+  // }
 }

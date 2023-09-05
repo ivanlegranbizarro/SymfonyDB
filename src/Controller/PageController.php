@@ -15,7 +15,7 @@ class PageController extends AbstractController
   {
   }
   #[Route('/', name: 'app_home')]
-  public function home(Product $product): Response
+  public function home(): Response
   {
     $products = $this->em->getRepository(Product::class)->findALlProductsWithCommentsAndTags();
     return $this->render('page/home.html.twig', ['products' => $products]);
@@ -30,6 +30,9 @@ class PageController extends AbstractController
   #[Route('/tag/{id}', name: 'app_tag')]
   public function tag(Tag $tag): Response
   {
-    return $this->render('page/tag.html.twig', ['tag' => $tag]);
+    return $this->render('page/tag.html.twig', [
+      'tag' => $tag,
+      'products' => $this->em->getRepository(Product::class)->findALlProductsWithCommentsAndTags($tag)
+    ]);
   }
 }
