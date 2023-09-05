@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Etiquetas
+{% endblock %}
+
+{% block body %}
+  <h1 class="mb-4">Products in <i>{{ tag.name }}</i></h1>
+  {% include 'page/_product.html.twig' with { products: tag.products } %}
+{% endblock %}

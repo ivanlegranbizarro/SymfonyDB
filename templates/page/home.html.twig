@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Bases de datos con Symfony
+  Products
 {% endblock %}
 
 {% block body %}
   <h1>Hello Home</h1>
+  {% include 'page/_product.html.twig' with { products: products } %}
 {% endblock %}
