@@ -17,8 +17,14 @@ class PageController extends AbstractController
   #[Route('/', name: 'app_home')]
   public function home(Product $product): Response
   {
-    $products = $this->em->getRepository(Product::class)->findAll($product);
+    $products = $this->em->getRepository(Product::class)->findALlProductsWithCommentsAndTags();
     return $this->render('page/home.html.twig', ['products' => $products]);
+  }
+
+  #[Route('/product/{id}', name: 'app_product')]
+  public function product(Product $product): Response
+  {
+    return $this->render('page/product.html.twig', ['product' => $product]);
   }
 
   #[Route('/tag/{id}', name: 'app_tag')]
